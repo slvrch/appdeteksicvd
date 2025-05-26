@@ -7,18 +7,12 @@ import gdown
 
 model_path_presence = "modeling/model_presence.joblib"
 
-if not os.path.exists(model_path_presence):
-    st.info("Model tidak ditemukan secara lokal. Mengunduh dari Google Drive")
-    
-    os.makedirs("modeling", exist_ok=True)  # Ensure the directory exists
-
-    # Download the model if it does not exist
-    url = "https://drive.google.com/uc?id=1nWUhcG4Uyotk_zbvi_LfnchPcCKgAp9f" 
-    gdown.download(url, model_path_presence, quiet=False)
+# Unduh model_presence menggunakan gdrive
+url = "https://drive.google.com/uc?id=1nWUhcG4Uyotk_zbvi_LfnchPcCKgAp9f" 
+gdown.download(url, model_path_presence, quiet=False)
 
 # Load model
 model_presence = load(model_path_presence)
-
 model_risk = load("modeling/model_risk.joblib")
 
 # Load encoders
