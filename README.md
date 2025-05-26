@@ -1,1 +1,2 @@
-# appdeteksicvd
+# Applikasi Deteksi CVD
+
