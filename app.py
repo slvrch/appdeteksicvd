@@ -18,7 +18,7 @@ model_presence = load_model_presence()
 model_risk = load("modeling/model_risk.joblib")
 
 # Load encoders
-result_target_presence = load("modeling/encoder_target.joblib")
+result_target_presence = load("modeling/encoder_presence_target.joblib")
 encoder_Hypertension_presence = load("modeling/encoder_presence_Hypertension.joblib")
 encoder_ECG_Abnormality_presence = load("modeling/encoder_presence_ECG_Abnormality.joblib")
 encoder_Diabetes_presence = load("modeling/encoder_presence_Diabetes.joblib")
