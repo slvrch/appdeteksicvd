@@ -10,7 +10,7 @@ def load_model_presence():
     model_path_presence = "model_presence.joblib"
     # Unduh model_presence menggunakan gdrive
     url = "https://drive.google.com/uc?id=1nWUhcG4Uyotk_zbvi_LfnchPcCKgAp9f"
-    if not os.path.exists(model_path_presence)
+    if not os.path.exists(model_path_presence):
         gdown.download(url, model_path_presence, quiet=False)
     return load(model_path_presence)
 
