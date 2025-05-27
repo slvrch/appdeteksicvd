@@ -1,10 +1,4 @@
 import os
-import sys
-import subprocess
-import importlib.util
-
-if importlib.util.find_spec("gdown") is None:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "gdown"])
 import gdown
 from joblib import load
 import pandas as pd
