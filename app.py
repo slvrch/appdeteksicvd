@@ -1,18 +1,22 @@
+import os
+import gdown
 from joblib import load
 import pandas as pd
 import numpy as np
 import streamlit as st
-import os
-import gdown
 
-model_path_presence = "modeling/model_presence.joblib"
+@st.cache_resource(show_spinner="Mengunduh dan memuat model CVD Presence...")
+def load_model_presence():
+    model_path_presence = "model_presence.joblib"
+    # Unduh model_presence menggunakan gdrive
+    url = "https://drive.google.com/uc?id=1nWUhcG4Uyotk_zbvi_LfnchPcCKgAp9f"
+    if not os.path.exists(model_path_presence)
+        gdown.download(url, model_path_presence, quiet=False)
+    return load(model_path_presence)
 
-# Unduh model_presence menggunakan gdrive
-url = "https://drive.google.com/uc?id=1nWUhcG4Uyotk_zbvi_LfnchPcCKgAp9f" 
-gdown.download(url, model_path_presence, quiet=False)
 
 # Load model
-model_presence = load(model_path_presence)
+model_presence = load_model_presence()
 model_risk = load("modeling/model_risk.joblib")
 
 # Load encoders
