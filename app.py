@@ -1,4 +1,10 @@
 import os
+import sys
+import subprocess
+import importlib.util
+
+if importlib.util.find_spec("gdown") is None:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "gdown"])
 import gdown
 from joblib import load
 import pandas as pd
@@ -13,8 +19,6 @@ def load_model_presence():
     if not os.path.exists(model_path_presence):
         gdown.download(url, model_path_presence, quiet=False)
     return load(model_path_presence)
-
-
 # Load model
 model_presence = load_model_presence()
 model_risk = load("modeling/model_risk.joblib")
