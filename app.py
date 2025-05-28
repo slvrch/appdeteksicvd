@@ -170,9 +170,6 @@ st.sidebar.info(
 """
 )
 
-st.sidebar.header("👨‍💻 Tentang Pengembang")
-st.sidebar.markdown("[🔗 Kunjungi LinkedIn Saya](https://www.linkedin.com/in/silvia-rachmawati/)")
-
 st.write("This is a web application to predict CVD using Machine Learning.")
 st.write("Please fill in the following form to make a prediction.")
 
