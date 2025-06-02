@@ -212,7 +212,7 @@ with tab_risk:
             st.selectbox(
                 "Alcohol", 
                 options=encoder_Alcohol_risk.classes_, 
-                index=2, 
+                index=1, 
                 key="Alcohol_risk",
                 help="Konsumsi alkohol, yang dapat mempengaruhi kesehatan jantung. Pilih 'Yes' jika mengonsumsi alkohol, 'No' jika tidak."
             )
@@ -221,7 +221,7 @@ with tab_risk:
             st.selectbox(
                 "Previous Stroke", 
                 options=encoder_Previous_Stroke_risk.classes_, 
-                index=3, 
+                index=0, 
                 key="Previous_Stroke_risk",
                 help="Riwayat stroke sebelumnya, yang dapat meningkatkan risiko CVD. Pilih 'Yes' jika ada riwayat stroke, 'No' jika tidak."
             )
@@ -230,7 +230,7 @@ with tab_risk:
             st.selectbox(
                 "Family History", 
                 options=encoder_Family_History_risk.classes_, 
-                index=2, 
+                index=1, 
                 key="Family_History_risk",
                 help="Riwayat penyakit jantung dalam keluarga, yang dapat meningkatkan risiko CVD. Pilih 'Yes' jika ada riwayat keluarga, 'No' jika tidak."
             )
@@ -445,7 +445,7 @@ with tab_presence:
                 help="Jumlah denyut jantung per menit ketika seseorang dalam kondisi istirahat penuh, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 60 hingga 100 detak per menit."
             )
         ]
-     })
+    })
     # Button to make prediction
     st.subheader("Data yang dimasukkan")
     st.dataframe(data_presence, width=800)
