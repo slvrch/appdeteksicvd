@@ -172,9 +172,24 @@ if st.session_state['registered']:
                 if response.status_code == 200:
                     result_risk = response.json()["prediction"]
                     st.session_state.hasil_prediksi_risk = result_risk
-                    st.success("Prediksi berhasil! Hasil: {result_risk}")
+                    st.success(f"Prediksi berhasil! Hasil: {result_risk}")
+
+                    # Kirim hasil ke Supabase
+                    try:
+                        requests.post("https://fastapicvd-production.up.railway.app/save-prediction",
+                         json={
+                             "nama": nama,
+                             "email": email,
+                             "no_tlp": no_tlp,
+                             "target": "risk",
+                             "hasil_prediksi": result_risk
+                         })
+                    except Exception as err:
+                        st.warning(f"Gagal menyimpan hasil ke database: {err}")
+                
                 else:
                     st.error("Gagal memproses prediksi: " + response.text)
+            
             except Exception as e:
                 st.error(f"Terjadi kesalahan saat menghubungi server: {e}")
                     
@@ -208,7 +223,7 @@ if st.session_state['registered']:
             if st.button("Reset", key="reset_risk"):
                 del st.session_state["hasil_prediksi_risk"]
                 st.experimental_rerun()
-            
+
     #================================================================================TAB 2===============================================================================
     # Tab untuk Prediksi Keberadaan CVD
     with tabs[1]:
@@ -312,9 +327,23 @@ if st.session_state['registered']:
                 if response.status_code == 200:
                     result_presence = response.json()["prediction"]
                     st.session_state.hasil_prediksi_presence = result_presence
-                    st.success("Prediksi berhasil! Hasil: {result_presence}")
+                    st.success(f"Prediksi berhasil! Hasil: {result_presence}")
+
+                    # Kirim hasil ke Supabase
+                    try:
+                        requests.post("https://fastapicvd-production.up.railway.app/save-prediction",
+                         json={
+                             "nama": nama,
+                             "email": email,
+                             "no_tlp": no_tlp,
+                             "target": "presence",
+                             "hasil_prediksi": result_presence
+                         })
+                    except Exception as err:
+                        st.warning(f"Gagal menyimpan hasil ke database: {err}")   
                 else:
                     st.error("Gagal memproses prediksi: " + response.text)
+            
             except Exception as e:
                 st.error(f"Terjadi error saat koneksi ke API: {e}")
 
@@ -331,4 +360,5 @@ if st.session_state['registered']:
                 
             if st.button("Reset", key="reset_presence"):
                 del st.session_state["hasil_prediksi_presence"]
-                st.experimental_rerun()
+                st.experimental_rerun() 
+
