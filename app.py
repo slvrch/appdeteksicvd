@@ -69,7 +69,6 @@ if not st.session_state['registered']:
                     st.error("Reistrasi gagal: "+ response.text)
             except Exception as e:
                 st.error(f"Terjadi kesalahan saat menghubungi server: {e}")
-                st.stop()
 
 # Jika sudah terdaftar, tampilkan dua tab prediksi
 if st.session_state['registered']:
@@ -77,315 +76,245 @@ if st.session_state['registered']:
     st.write("This is a web application to predict CVD using Machine Learning.")
     st.write("Please fill in the following form to make a prediction.")
     
-    tab_risk, tab_presence = st.tabs(["Prediksi CVD Risk Score", "Prediksi CVD Presence"])
-    
-    with tab_risk:
-        st.subheader("Prediksi Risiko CVD")
-        st.write("Silakan isi data berikut untuk memprediksi risiko CVD.")
+    tabs = st.tabs(["Prediksi CVD Risk Score", "Prediksi CVD Presence"])
+
+   #=============================================================TAB 1================================================================================ 
+    with tabs[0]:
+        st.subheader("Masukkan Data untuk Prediksi Keberadaan CVD")
         
         # Input Form
-        data_risk = pd.DataFrame({
-        "Hypertension" : [
+        data_risk = {
+        "Hypertension": 
             st.selectbox(
                 "Hypertension", 
-                options=encoder_Hypertension_risk.classes_, 
-                index=1, 
+                options=["Yes", "No"], 
                 key="Hypertension_risk",
                 help="Tekanan darah tinggi, kondisi di mana tekanan darah dalam arteri meningkat secara kronis. Pilih 'Yes' jika ada riwayat hipertensi, 'No' jika tidak."
-            )
-        ],
-        "ECG_Abnormality" : [
+            ),
+        "ECG_Abnormality":
             st.selectbox(
                 "ECG Abnormality",
-                options=encoder_ECG_Abnormality_risk.classes_,
-                index=1, 
+                options=["Normal", "Arrhythmia", "Ischemia"], 
                 key="ECG_Abnormality_risk",
                 help="Kelainan pada hasil elektrokardiogram (ECG), yang dapat menunjukkan masalah jantung. Pilih 'Normal' jika tidak ada kelainan; 'Arrhythmia' jika ketidaknormalan dalam irama jantung, berupa detak jantung terlalu cepat, terlalu lambat, atau tidak teratur; 'Ischemia' jika kondisi otot jantung tidak mendapatkan cukup oksigen karena aliran darah berkurang."
-            )
-        ],
-        "Diabetes" : [
+            ),
+        "Diabetes" :
             st.selectbox(
                 "Diabetes",
-                options=encoder_Diabetes_risk.classes_, 
-                index=0, 
+                options=["Yes", "No"],
                 key="Diabetes_risk",
                 help="Kondisi di mana tubuh tidak dapat mengatur kadar gula darah dengan baik. Pilih 'Yes' jika ada riwayat diabetes, 'No' jika tidak."
-            )
-        ],
-        "Alcohol" : [
+            ),
+        "Alcohol":
             st.selectbox(
                 "Alcohol", 
-                options=encoder_Alcohol_risk.classes_, 
-                index=1, 
+                options=["Yes", "No"],
                 key="Alcohol_risk",
                 help="Konsumsi alkohol, yang dapat mempengaruhi kesehatan jantung. Pilih 'Yes' jika mengonsumsi alkohol, 'No' jika tidak."
-            )
-        ],
-        "Previous_Stroke" : [
+            ),
+        "Previous_Stroke":
             st.selectbox(
                 "Previous Stroke", 
-                options=encoder_Previous_Stroke_risk.classes_, 
-                index=0, 
+                options=["Yes", "No"], 
                 key="Previous_Stroke_risk",
                 help="Riwayat stroke sebelumnya, yang dapat meningkatkan risiko CVD. Pilih 'Yes' jika ada riwayat stroke, 'No' jika tidak."
-            )
-        ],
-        "Family_History" : [
+            ),
+        "Family_History":
             st.selectbox(
                 "Family History", 
-                options=encoder_Family_History_risk.classes_, 
-                index=1, 
+                options=["Yes", "No"],
                 key="Family_History_risk",
                 help="Riwayat penyakit jantung dalam keluarga, yang dapat meningkatkan risiko CVD. Pilih 'Yes' jika ada riwayat keluarga, 'No' jika tidak."
-            )
-        ],
-        "Insulin_Resistance" : [
+            ),
+        "Insulin_Resistance":
             st.number_input(
                 "Insulin Resistance", 
-                value=4.732879, 
                 step=0.1, 
                 key="Insulin_Resistance_risk",
                 help="Kondisi dimana sel-sel dalam tubuh tidak merespon dengan baik terhadap insulin. Tingkat resistensi insulin terjadi saat glukosa tidak bisa masuk ke dalam sel dengan efisien yang mengakibatkan peningkatan kadar glukosa dalam darah sehingga dapat mempengaruhi risiko CVD. Nilai normal berkisar antara 0 hingga 10, dengan nilai lebih tinggi menunjukkan resistensi yang lebih besar."
-            )
-        ],
-        "Pulse_Pressure" : [
+            ),
+        "Pulse_Pressure":
             st.number_input(
                 "Pulse Pressure", 
-                value=42.972956, 
                 step=0.1, 
                 key="Pulse_Pressure_risk",
                 help="Perbedaan antara tekanan sistolik dan diastolik, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 30 hingga 50 mmHg."
-            )
-        ],
-        "Diastolic_BP" : [
+            ),
+        "Diastolic_BP":
             st.number_input(
-                "Diastolic BP", 
-                value=86.808942, 
+                "Diastolic BP",
                 step=0.1, 
                 key="Diastolic_BP_risk",
                 help="Tekanan darah diastolik, yaitu tekanan pada arteri ketika jantung berada dalam kondisi istirahat di antara dua detak, ketika jantung mengisi kembali dengan darah. Nilai normal berkisar antara 60 hingga 80 mmHg."
-            )
-        ],
-        "Systolic_BP" : [
+            ),
+        "Systolic_BP":
             st.number_input(
                 "Systolic BP", 
-                value=111.648090, 
                 step=0.1, 
                 key="Systolic_BP_risk",
                 help="Tekanan darah sistolik, yaitu tekanan pada arteri ketika jantung berkontraksi dan memompa darah keluar ke seluruh tubuh. Nilai normal berkisar antara 90 hingga 120 mmHg."
-            )
-        ],
-        "Resting_HR" : [
+            ),
+        "Resting_HR":
             st.number_input(
                 "Resting HR", 
-                value=72.329284, 
                 step=0.1, 
                 key="Resting_HR_risk",
                 help="Jumlah denyut jantung per menit ketika seseorang dalam kondisi istirahat penuh, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 60 hingga 100 detak per menit."
             )
-        ]
-     })
-        
-        # Button to make prediction
-        st.subheader("Data yang dimasukkan")
-        st.dataframe(data_risk, width=800)
-        
+     }
         # Button to make prediction
         if st.button("Prediksi", key="predict_risk"):
-            st.write("Memproses data...")
-            # Preprocess data
-            new_data_risk = data_preprocessing_risk(data=data_risk)
-            with st.expander("View the Preprocessed Data"):
-                st.dataframe(data=new_data_risk, width=800, height=10)
-            st.write("Data telah diproses, sekarang memprediksi risiko CVD...")
-            st.write("Mohon tunggu sebentar...")
-            
             try:
                 response = requests.post(
                     "https://fastapicvd-production.up.railway.app/predict-risk",
-                    json=new_data_risk.iloc[0].to_dict()
+                    json=data_risk
                 )
                 if response.status_code == 200:
                     result_risk = response.json()["prediction"]
-                    st.session_state.hasil_prediksi_risk = result_risk  # Save result in session state
+                    st.session_state.hasil_prediksi_risk = result_risk
+                    st.success("Prediksi berhasil! Hasil: {result_risk}")
                 else:
-                    st.error("Prediksi gagal: " + response.text)
+                    st.error("Gagal memproses prediksi: " + response.text)
             except Exception as e:
-                st.error(f"Terjadi error saat koneksi ke API: {e}")
+                st.error(f"Terjadi kesalahan saat menghubungi server: {e}")
+                    
+        if "hasil_prediksi_risk" in st.session_state:
+            result_risk = st.session_state.hasil_prediksi_risk             
+            # Display result
+            st.subheader("Hasil Prediksi")
+            st.write(f"Prediksi CVD Risiko: {result_risk}")
+                
+            if result_risk == "High":
+                st.error("⚠️ Risiko Tinggi! Segera konsultasikan ke dokter.")
+            elif result_risk == "Moderate":
+                st.warning("⚠️ Risiko Sedang. Waspada dan mulai ubah gaya hidup.")
+            else:
+                st.success("✅ Risiko Rendah. Tetap jaga pola hidup sehat.")
+                    
+            st.markdown("---")
+            st.subheader("📌 Rekomendasi Gaya Hidup Sehat")
+            st.markdown("""
+                        - 🏃 Rutin berolahraga minimal 30 menit sehari
+                        - 🥦 Konsumsi makanan rendah lemak dan garam
+                        - 🚭 Hindari merokok dan konsumsi alkohol berlebihan
+                        - 💤 Tidur cukup 7-8 jam sehari
+                        - 🩺 Rutin cek kesehatan dan konsultasi dokter
+                        - 🧘‍♂️ Kelola stres dengan baik
+                        - 💧 Minum cukup air putih setiap hari
+                        - 🥗 Perbanyak konsumsi buah dan sayur
+                    """)
+            st.markdown("🧠 *Prediksi ini hanya bersifat indikatif, bukan diagnosis medis.*")
+                    
+            if st.button("Reset", key="reset_risk"):
+                del st.session_state["hasil_prediksi_risk"]
+                st.experimental_rerun()
             
-            if "hasil_prediksi_risk" in st.session_state:
-                result_risk = st.session_state.hasil_prediksi_risk
-                
-                # Display result
-                st.subheader("Hasil Prediksi")
-                st.write(f"Prediksi CVD Risiko: {result_risk}")
-                
-                if result_risk == "High":
-                    st.error("⚠️ Risiko Tinggi! Segera konsultasikan ke dokter.")
-                elif result_risk == "Moderate":
-                    st.warning("⚠️ Risiko Sedang. Waspada dan mulai ubah gaya hidup.")
-                else:
-                    st.success("✅ Risiko Rendah. Tetap jaga pola hidup sehat.")
-                    
-                    st.markdown("---")
-                    st.subheader("📌 Rekomendasi Gaya Hidup Sehat")
-                    st.markdown("""
-                                - 🏃 Rutin berolahraga minimal 30 menit sehari
-                                - 🥦 Konsumsi makanan rendah lemak dan garam
-                                - 🚭 Hindari merokok dan konsumsi alkohol berlebihan
-                                - 💤 Tidur cukup 7-8 jam sehari
-                                - 🩺 Rutin cek kesehatan dan konsultasi dokter
-                                - 🧘‍♂️ Kelola stres dengan baik
-                                - 💧 Minum cukup air putih setiap hari
-                                - 🥗 Perbanyak konsumsi buah dan sayur
-                                """)
-                    st.markdown("🧠 *Prediksi ini hanya bersifat indikatif, bukan diagnosis medis.*")
-                    
-                    if st.button("Reset", key="reset_risk"):
-                        st.session_state.hasil_prediksi_risk = None
-                        st.experimental_rerun()
-    
+    #================================================================================TAB 2===============================================================================
     # Tab untuk Prediksi Keberadaan CVD
-    with tab_presence:
-        st.subheader("Prediksi Keberadaan CVD")
-        st.write("Silakan isi data berikut untuk memprediksi keberadaan CVD.")
+    with tabs[1]:
+        st.subheader("Masukkan Data untuk Prediksi Keberadaan CVD")
     
         # Input Form
-        data_presence = pd.DataFrame({
-        "Hypertension" : [
+        data_presence = {
+        "Hypertension":
             st.selectbox(
                 "Hypertension", 
-                options=encoder_Hypertension_presence.classes_, 
-                index=1, 
+                options=["Yes", "No"], 
                 key="Hypertension_presence",
                 help="Tekanan darah tinggi, kondisi di mana tekanan darah dalam arteri meningkat secara kronis. Pilih 'Yes' jika ada riwayat hipertensi, 'No' jika tidak."
-            )
-        ],
-        "ECG_Abnormality" : [
+            ),
+        "ECG_Abnormality":
             st.selectbox(
                 "ECG Abnormality",
-                options=encoder_ECG_Abnormality_presence.classes_,
-                index=0, 
+                options=["Normal", "Arrhythmia", "Ischemia"],
                 key="ECG_Abnormality_presence",
                 help="Kelainan pada hasil elektrokardiogram (ECG), yang dapat menunjukkan masalah jantung. Pilih 'Normal' jika tidak ada kelainan; 'Arrhythmia' jika ketidaknormalan dalam irama jantung, berupa detak jantung terlalu cepat, terlalu lambat, atau tidak teratur; 'Ischemia' jika kondisi otot jantung tidak mendapatkan cukup oksigen karena aliran darah berkurang."
-            )
-        ],
-        "Diabetes" : [
+            ),
+        "Diabetes":
             st.selectbox(
                 "Diabetes",
-                options=encoder_Diabetes_presence.classes_, 
-                index=1, 
+                options=["Yes", "No"], 
                 key="Diabetes_presence",
                 help="Kondisi di mana tubuh tidak dapat mengatur kadar gula darah dengan baik. Pilih 'Yes' jika ada riwayat diabetes, 'No' jika tidak."
-            )
-        ],
-        "Alcohol" : [
+            ),
+        "Alcohol":
             st.selectbox(
                 "Alcohol", 
-                options=encoder_Alcohol_presence.classes_, 
-                index=0, 
+                options=["Yes", "No"], 
                 key="Alcohol_presence",
                 help="Konsumsi alkohol, yang dapat mempengaruhi kesehatan jantung. Pilih 'Yes' jika mengonsumsi alkohol, 'No' jika tidak."
-            )
-        ],
-        "Previous_Stroke" : [
+            ),
+        "Previous_Stroke":
             st.selectbox(
                 "Previous Stroke", 
-                options=encoder_Previous_Stroke_presence.classes_, 
-                index=1, 
+                options=["Yes", "No"],
                 key="Previous_Stroke_presence",
                 help="Riwayat stroke sebelumnya, yang dapat meningkatkan risiko CVD. Pilih 'Yes' jika ada riwayat stroke, 'No' jika tidak."
-            )
-        ],
-        "Family_History" : [
+            ),
+        "Family_History":
             st.selectbox(
                 "Family History", 
-                options=encoder_Family_History_presence.classes_, 
-                index=1, 
+                options=["Yes", "No"], 
                 key="Family_History_presence",
                 help="Riwayat penyakit jantung dalam keluarga, yang dapat meningkatkan risiko CVD. Pilih 'Yes' jika ada riwayat keluarga, 'No' jika tidak."
-            )
-        ],
-        "CVD_Risk_Score" : [
+            ),
+        "CVD_Risk_Score":
             st.selectbox(
                 "CVD Risk Score", 
-                options=encoder_CVD_Risk_Score_presence.classes_, 
-                index=1, 
+                options=["Low", "Moderate", "High"], 
                 key="CVD_Risk_Score_presence",
                 help="Skor tingkat risiko seseorang untuk mengembangkan penyakit kardiovaskular di masa depan. Pilih 'Low' jika skor risiko rendah, 'Moderate' jika sedang, dan 'High' jika tinggi."
-            )
-        ],
-        "Insulin_Resistance" : [
+            ),
+        "Insulin_Resistance":
             st.number_input(
                 "Insulin Resistance", 
-                value=6.441541, 
                 step=0.1, 
                 key="Insulin_Resistance_presence",
                 help="Kondisi dimana sel-sel dalam tubuh tidak merespon dengan baik terhadap insulin. Tingkat resistensi insulin terjadi saat glukosa tidak bisa masuk ke dalam sel dengan efisien yang mengakibatkan peningkatan kadar glukosa dalam darah sehingga dapat mempengaruhi risiko CVD. Nilai normal berkisar antara 0 hingga 10, dengan nilai lebih tinggi menunjukkan resistensi yang lebih besar."
-            )
-        ],
-        "Pulse_Pressure" : [
+            ),
+        "Pulse_Pressure":
             st.number_input(
                 "Pulse Pressure", 
-                value=33.438115, 
                 step=0.1, 
                 key="Pulse_Pressure_presence",
                 help="Perbedaan antara tekanan sistolik dan diastolik, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 30 hingga 50 mmHg."
-            )
-        ],
-        "Diastolic_BP" : [
+            ),
+        "Diastolic_BP":
             st.number_input(
                 "Diastolic BP", 
-                value=73.272788, 
                 step=0.1, 
                 key="Diastolic_BP_presence",
                 help="Tekanan darah diastolik, yaitu tekanan pada arteri ketika jantung berada dalam kondisi istirahat di antara dua detak, ketika jantung mengisi kembali dengan darah. Nilai normal berkisar antara 60 hingga 80 mmHg."
-            )
-        ],
-        "Systolic_BP" : [
+            ),
+        "Systolic_BP":
             st.number_input(
-                "Systolic BP", 
-                value=116.245744, 
+                "Systolic BP",  
                 step=0.1, 
                 key="Systolic_BP_presence",
                 help="Tekanan darah sistolik, yaitu tekanan pada arteri ketika jantung berkontraksi dan memompa darah keluar ke seluruh tubuh. Nilai normal berkisar antara 90 hingga 120 mmHg."
-            )
-        ],
-        "Resting_HR" : [
+            ),
+        "Resting_HR":
             st.number_input(
                 "Resting HR", 
-                value=60.970855, 
                 step=0.1, 
                 key="Resting_HR_presence",
                 help="Jumlah denyut jantung per menit ketika seseorang dalam kondisi istirahat penuh, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 60 hingga 100 detak per menit."
             )
-        ]
-    })
+    }
         
         # Button to make prediction
-        st.subheader("Data yang dimasukkan")
-        st.dataframe(data_presence, width=800)
-    
         if st.button("Prediksi", key="predict_presence"):
-            st.write("Memproses data...")
-            
-            # Preprocess data
-            new_data_presence = data_preprocessing_presence(data=data_presence)
-            with st.expander("View the Preprocessed Data"):
-                st.dataframe(data=new_data_presence, width=800, height=10)
-            st.write("Data telah diproses, sekarang memprediksi keberadaan CVD...")
-            st.write("Mohon tunggu sebentar...")
-
             try:
                 response = requests.post(
                     "https://fastapicvd-production.up.railway.app/predict-presence",
-                    json=new_data_presence.iloc[0].to_dict()
+                    json=data_presence
                 )
                 if response.status_code == 200:
                     result_presence = response.json()["prediction"]
-                    st.session_state.hasil_prediksi_presence = result_presence  # Save result in session state
+                    st.session_state.hasil_prediksi_presence = result_presence
+                    st.success("Prediksi berhasil! Hasil: {result_presence}")
                 else:
-                    st.error("Prediksi gagal: " + response.text)
+                    st.error("Gagal memproses prediksi: " + response.text)
             except Exception as e:
                 st.error(f"Terjadi error saat koneksi ke API: {e}")
 
@@ -401,5 +330,5 @@ if st.session_state['registered']:
                 st.success("CVD Presence: **Tidak Terdeteksi**")
                 
             if st.button("Reset", key="reset_presence"):
-                st.session_state.hasil_prediksi_presence = None
+                del st.session_state["hasil_prediksi_presence"]
                 st.experimental_rerun()
