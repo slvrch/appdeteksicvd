@@ -63,8 +63,11 @@ if not st.session_state['registered']:
                 })
                 if response.status_code == 200:
                     st.success("Registrasi berhasil!")
-                    st.session_state['registered'] = True
-                    st.rerun() # Reload app untuk menampilkan tab prediksi
+                    query_params = st.experimental_get_query_params()
+                    if query_params.get("registered") == ["true"]:
+                        st.session_state['registered'] = True
+                        st.experimental_set_query_params(registered="true")
+                        st.rerun() # Reload app untuk menampilkan tab prediksi
                 else:
                     st.error("Reistrasi gagal: "+ response.text)
             except Exception as e:
