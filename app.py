@@ -44,6 +44,11 @@ st.sidebar.info(
 if 'registered' not in st.session_state:
     st.session_state['registered'] = False
 
+# Cek query parameter untuk auto-set session jika URL mengandung ?registered=true
+query_params = st.experimental_get_query_params()
+if query_params.get("registered") == ["true"]:
+    st.session_state['registered'] = True
+    
 # Jika belum terdaftar, tampilkan form registrasi
 if not st.session_state['registered']:
     st.title("Form Registrasi Pengguna")
@@ -63,13 +68,11 @@ if not st.session_state['registered']:
                 })
                 if response.status_code == 200:
                     st.success("Registrasi berhasil!")
-                    query_params = st.experimental_get_query_params()
-                    if query_params.get("registered") == ["true"]:
-                        st.session_state['registered'] = True
-                        st.experimental_set_query_params(registered="true")
-                        st.rerun() # Reload app untuk menampilkan tab prediksi
+                    st.session_state['registered'] = True
+                    st.experimental_set_query_params(registered="true")
+                    st.rerun()                   
                 else:
-                    st.error("Reistrasi gagal: "+ response.text)
+                    st.error("Registrasi gagal: "+ response.text)
             except Exception as e:
                 st.error(f"Terjadi kesalahan saat menghubungi server: {e}")
 
@@ -83,8 +86,9 @@ if st.session_state['registered']:
 
    #=============================================================TAB 1================================================================================ 
     with tabs[0]:
-        st.subheader("Masukkan Data untuk Prediksi Keberadaan CVD")
-        
+        st.subheader("Masukkan Data untuk Prediksi risiko CVD")
+        st.write("Form untuk prediksi risiko akan ditampilkan di sini.")
+
         # Input Form
         data_risk = {
         "Hypertension": 
@@ -231,7 +235,8 @@ if st.session_state['registered']:
     # Tab untuk Prediksi Keberadaan CVD
     with tabs[1]:
         st.subheader("Masukkan Data untuk Prediksi Keberadaan CVD")
-    
+        st.write("Form untuk prediksi keberadaan CVD akan ditampilkan di sini.")
+
         # Input Form
         data_presence = {
         "Hypertension":
