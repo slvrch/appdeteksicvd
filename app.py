@@ -64,7 +64,7 @@ if not st.session_state['registered']:
                 if response.status_code == 200:
                     st.success("Registrasi berhasil!")
                     st.session_state['registered'] = True
-                    st.experimental_rerun() # Reload app untuk menampilkan tab prediksi
+                    st.rerun() # Reload app untuk menampilkan tab prediksi
                 else:
                     st.error("Reistrasi gagal: "+ response.text)
             except Exception as e:
@@ -222,7 +222,7 @@ if st.session_state['registered']:
                     
             if st.button("Reset", key="reset_risk"):
                 del st.session_state["hasil_prediksi_risk"]
-                st.experimental_rerun()
+                st.rerun()
 
     #================================================================================TAB 2===============================================================================
     # Tab untuk Prediksi Keberadaan CVD
@@ -360,5 +360,5 @@ if st.session_state['registered']:
                 
             if st.button("Reset", key="reset_presence"):
                 del st.session_state["hasil_prediksi_presence"]
-                st.experimental_rerun() 
+                st.rerun() 
 
