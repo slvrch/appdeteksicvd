@@ -45,7 +45,7 @@ if 'registered' not in st.session_state:
     st.session_state['registered'] = False
 
 # Cek query parameter untuk auto-set session jika URL mengandung ?registered=true
-query_params = st.experimental_get_query_params()
+query_params = st.query_params
 if query_params.get("registered") == ["true"]:
     st.session_state['registered'] = True
     
@@ -79,7 +79,6 @@ if not st.session_state['registered']:
 # Jika sudah terdaftar, tampilkan dua tab prediksi
 if st.session_state['registered']:
     st.title("Menu Prediksi CVD")
-    st.write("This is a web application to predict CVD using Machine Learning.")
     st.write("Please fill in the following form to make a prediction.")
     
     tabs = st.tabs(["Prediksi CVD Risk Score", "Prediksi CVD Presence"])
