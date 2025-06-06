@@ -69,7 +69,7 @@ if not st.session_state['registered']:
                 if response.status_code == 200:
                     st.success("Registrasi berhasil!")
                     st.session_state['registered'] = True
-                    st.query_params(registered="true")
+                    st.query_params = {"registered": "true"}
                     st.rerun()                   
                 else:
                     st.error("Registrasi gagal: "+ response.text)
