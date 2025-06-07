@@ -97,48 +97,6 @@ if st.session_state['registered']:
 
         # Input Form
         data_risk = {
-        "Hypertension": 
-            st.selectbox(
-                "Hypertension", 
-                label_options["risk"]["Hypertension"], 
-                key="Hypertension_risk",
-                help="Tekanan darah tinggi, kondisi di mana tekanan darah dalam arteri meningkat secara kronis. Pilih 'Yes' jika ada riwayat hipertensi, 'No' jika tidak."
-            ),
-        "ECG_Abnormality":
-            st.selectbox(
-                "ECG Abnormality",
-                label_options["risk"]["ECG_Abnormality"], 
-                key="ECG_Abnormality_risk",
-                help="Kelainan pada hasil elektrokardiogram (ECG), yang dapat menunjukkan masalah jantung. Pilih 'Normal' jika tidak ada kelainan; 'Arrhythmia' jika ketidaknormalan dalam irama jantung, berupa detak jantung terlalu cepat, terlalu lambat, atau tidak teratur; 'Ischemia' jika kondisi otot jantung tidak mendapatkan cukup oksigen karena aliran darah berkurang."
-            ),
-        "Diabetes" :
-            st.selectbox(
-                "Diabetes",
-                label_options["risk"]["Diabetes"],
-                key="Diabetes_risk",
-                help="Kondisi di mana tubuh tidak dapat mengatur kadar gula darah dengan baik. Pilih 'Yes' jika ada riwayat diabetes, 'No' jika tidak."
-            ),
-        "Alcohol":
-            st.selectbox(
-                "Alcohol", 
-                label_options["risk"]["Alcohol"],
-                key="Alcohol_risk",
-                help="Konsumsi alkohol, yang dapat mempengaruhi kesehatan jantung. Pilih 'Yes' jika mengonsumsi alkohol, 'No' jika tidak."
-            ),
-        "Previous_Stroke":
-            st.selectbox(
-                "Previous Stroke", 
-                label_options["risk"]["Previous_Stroke"], 
-                key="Previous_Stroke_risk",
-                help="Riwayat stroke sebelumnya, yang dapat meningkatkan risiko CVD. Pilih 'Yes' jika ada riwayat stroke, 'No' jika tidak."
-            ),
-        "Family_History":
-            st.selectbox(
-                "Family History", 
-                label_options["risk"]["Family_History"],
-                key="Family_History_risk",
-                help="Riwayat penyakit jantung dalam keluarga, yang dapat meningkatkan risiko CVD. Pilih 'Yes' jika ada riwayat keluarga, 'No' jika tidak."
-            ),
         "Insulin_Resistance":
             st.number_input(
                 "Insulin Resistance", 
@@ -173,7 +131,49 @@ if st.session_state['registered']:
                 step=0.1, 
                 key="Resting_HR_risk",
                 help="Jumlah denyut jantung per menit ketika seseorang dalam kondisi istirahat penuh, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 60 hingga 100 detak per menit."
-            )
+            ),
+        "Hypertension": 
+            st.selectbox(
+                "Hypertension", 
+                label_options["risk"]["Hypertension"], 
+                key="Hypertension_risk",
+                help="Tekanan darah tinggi, kondisi di mana tekanan darah dalam arteri meningkat secara kronis. Pilih 'Yes' jika ada riwayat hipertensi, 'No' jika tidak."
+            ),
+        "ECG_Abnormality":
+            st.selectbox(
+                "ECG Abnormality",
+                label_options["risk"]["ECG_Abnormality"], 
+                key="ECG_Abnormality_risk",
+                help="Kelainan pada hasil elektrokardiogram (ECG), yang dapat menunjukkan masalah jantung. Pilih 'Normal' jika tidak ada kelainan; 'Arrhythmia' jika ketidaknormalan dalam irama jantung, berupa detak jantung terlalu cepat, terlalu lambat, atau tidak teratur; 'Ischemia' jika kondisi otot jantung tidak mendapatkan cukup oksigen karena aliran darah berkurang."
+            ),
+        "Diabetes":
+            st.selectbox(
+                "Diabetes",
+                label_options["risk"]["Diabetes"],
+                key="Diabetes_risk",
+                help="Kondisi di mana tubuh tidak dapat mengatur kadar gula darah dengan baik. Pilih 'Yes' jika ada riwayat diabetes, 'No' jika tidak."
+            ),
+        "Alcohol":
+            st.selectbox(
+                "Alcohol", 
+                label_options["risk"]["Alcohol"],
+                key="Alcohol_risk",
+                help="Konsumsi alkohol, yang dapat mempengaruhi kesehatan jantung. Pilih 'Yes' jika mengonsumsi alkohol, 'No' jika tidak."
+            ),
+        "Previous_Stroke":
+            st.selectbox(
+                "Previous Stroke", 
+                label_options["risk"]["Previous_Stroke"], 
+                key="Previous_Stroke_risk",
+                help="Riwayat stroke sebelumnya, yang dapat meningkatkan risiko CVD. Pilih 'Yes' jika ada riwayat stroke, 'No' jika tidak."
+            ),
+        "Family_History":
+            st.selectbox(
+                "Family History", 
+                label_options["risk"]["Family_History"],
+                key="Family_History_risk",
+                help="Riwayat penyakit jantung dalam keluarga, yang dapat meningkatkan risiko CVD. Pilih 'Yes' jika ada riwayat keluarga, 'No' jika tidak."
+            )       
      }
         # Button to make prediction
         if st.button("Prediksi", key="predict_risk"):
@@ -245,6 +245,41 @@ if st.session_state['registered']:
 
         # Input Form
         data_presence = {
+        "Insulin_Resistance":
+            st.number_input(
+                "Insulin Resistance", 
+                step=0.1, 
+                key="Insulin_Resistance_presence",
+                help="Kondisi dimana sel-sel dalam tubuh tidak merespon dengan baik terhadap insulin. Tingkat resistensi insulin terjadi saat glukosa tidak bisa masuk ke dalam sel dengan efisien yang mengakibatkan peningkatan kadar glukosa dalam darah sehingga dapat mempengaruhi risiko CVD. Nilai normal berkisar antara 0 hingga 10, dengan nilai lebih tinggi menunjukkan resistensi yang lebih besar."
+            ),
+        "Pulse_Pressure":
+            st.number_input(
+                "Pulse Pressure", 
+                step=0.1, 
+                key="Pulse_Pressure_presence",
+                help="Perbedaan antara tekanan sistolik dan diastolik, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 30 hingga 50 mmHg."
+            ),
+        "Diastolic_BP":
+            st.number_input(
+                "Diastolic BP", 
+                step=0.1, 
+                key="Diastolic_BP_presence",
+                help="Tekanan darah diastolik, yaitu tekanan pada arteri ketika jantung berada dalam kondisi istirahat di antara dua detak, ketika jantung mengisi kembali dengan darah. Nilai normal berkisar antara 60 hingga 80 mmHg."
+            ),
+        "Systolic_BP":
+            st.number_input(
+                "Systolic BP",  
+                step=0.1, 
+                key="Systolic_BP_presence",
+                help="Tekanan darah sistolik, yaitu tekanan pada arteri ketika jantung berkontraksi dan memompa darah keluar ke seluruh tubuh. Nilai normal berkisar antara 90 hingga 120 mmHg."
+            ),
+        "Resting_HR":
+            st.number_input(
+                "Resting HR", 
+                step=0.1, 
+                key="Resting_HR_presence",
+                help="Jumlah denyut jantung per menit ketika seseorang dalam kondisi istirahat penuh, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 60 hingga 100 detak per menit."
+            ),
         "Hypertension":
             st.selectbox(
                 "Hypertension", 
@@ -293,41 +328,6 @@ if st.session_state['registered']:
                 label_options["presence"]["CVD_Risk_Score"], 
                 key="CVD_Risk_Score_presence",
                 help="Skor tingkat risiko seseorang untuk mengembangkan penyakit kardiovaskular di masa depan. Pilih 'Low' jika skor risiko rendah, 'Moderate' jika sedang, dan 'High' jika tinggi."
-            ),
-        "Insulin_Resistance":
-            st.number_input(
-                "Insulin Resistance", 
-                step=0.1, 
-                key="Insulin_Resistance_presence",
-                help="Kondisi dimana sel-sel dalam tubuh tidak merespon dengan baik terhadap insulin. Tingkat resistensi insulin terjadi saat glukosa tidak bisa masuk ke dalam sel dengan efisien yang mengakibatkan peningkatan kadar glukosa dalam darah sehingga dapat mempengaruhi risiko CVD. Nilai normal berkisar antara 0 hingga 10, dengan nilai lebih tinggi menunjukkan resistensi yang lebih besar."
-            ),
-        "Pulse_Pressure":
-            st.number_input(
-                "Pulse Pressure", 
-                step=0.1, 
-                key="Pulse_Pressure_presence",
-                help="Perbedaan antara tekanan sistolik dan diastolik, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 30 hingga 50 mmHg."
-            ),
-        "Diastolic_BP":
-            st.number_input(
-                "Diastolic BP", 
-                step=0.1, 
-                key="Diastolic_BP_presence",
-                help="Tekanan darah diastolik, yaitu tekanan pada arteri ketika jantung berada dalam kondisi istirahat di antara dua detak, ketika jantung mengisi kembali dengan darah. Nilai normal berkisar antara 60 hingga 80 mmHg."
-            ),
-        "Systolic_BP":
-            st.number_input(
-                "Systolic BP",  
-                step=0.1, 
-                key="Systolic_BP_presence",
-                help="Tekanan darah sistolik, yaitu tekanan pada arteri ketika jantung berkontraksi dan memompa darah keluar ke seluruh tubuh. Nilai normal berkisar antara 90 hingga 120 mmHg."
-            ),
-        "Resting_HR":
-            st.number_input(
-                "Resting HR", 
-                step=0.1, 
-                key="Resting_HR_presence",
-                help="Jumlah denyut jantung per menit ketika seseorang dalam kondisi istirahat penuh, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 60 hingga 100 detak per menit."
             )
     }
         
