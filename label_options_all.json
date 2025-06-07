@@ -1,0 +1,61 @@
+{
+  "risk": {
+    "Hypertension": [
+      "No",
+      "Yes"
+    ],
+    "ECG_Abnormality": [
+      "Arrhythmia",
+      "Ischemia",
+      "Normal"
+    ],
+    "Diabetes": [
+      "No",
+      "Yes"
+    ],
+    "Alcohol": [
+      "Minum",
+      "Tidak minum"
+    ],
+    "Previous_Stroke": [
+      "No",
+      "Yes"
+    ],
+    "Family_History": [
+      "Ada riwayat",
+      "Tidak ada riwayat"
+    ]
+  },
+  "presence": {
+    "Hypertension": [
+      "No",
+      "Yes"
+    ],
+    "ECG_Abnormality": [
+      "Arrhythmia",
+      "Ischemia",
+      "Normal"
+    ],
+    "Diabetes": [
+      "No",
+      "Yes"
+    ],
+    "Alcohol": [
+      "Minum",
+      "Tidak minum"
+    ],
+    "Previous_Stroke": [
+      "No",
+      "Yes"
+    ],
+    "Family_History": [
+      "Ada riwayat",
+      "Tidak ada riwayat"
+    ],
+    "CVD_Risk_Score": [
+      "High",
+      "Low",
+      "Moderate"
+    ]
+  }
+}
