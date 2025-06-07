@@ -1,9 +1,16 @@
 import os
 import pandas as pd
+import json
+import gdown
+from joblib import load 
 import numpy as np
 import streamlit as st
 import requests
 
+
+
+with open("label_options_all.json", "r") as f:
+    label_options = json.load(f)
 
 # Streamlit
 # Tampilan Utama
@@ -93,42 +100,42 @@ if st.session_state['registered']:
         "Hypertension": 
             st.selectbox(
                 "Hypertension", 
-                options=["Yes", "No"], 
+                label_options["risk"]["Hypertension"], 
                 key="Hypertension_risk",
                 help="Tekanan darah tinggi, kondisi di mana tekanan darah dalam arteri meningkat secara kronis. Pilih 'Yes' jika ada riwayat hipertensi, 'No' jika tidak."
             ),
         "ECG_Abnormality":
             st.selectbox(
                 "ECG Abnormality",
-                options=["Normal", "Arrhythmia", "Ischemia"], 
+                label_options["risk"]["ECG_Abnormality"], 
                 key="ECG_Abnormality_risk",
                 help="Kelainan pada hasil elektrokardiogram (ECG), yang dapat menunjukkan masalah jantung. Pilih 'Normal' jika tidak ada kelainan; 'Arrhythmia' jika ketidaknormalan dalam irama jantung, berupa detak jantung terlalu cepat, terlalu lambat, atau tidak teratur; 'Ischemia' jika kondisi otot jantung tidak mendapatkan cukup oksigen karena aliran darah berkurang."
             ),
         "Diabetes" :
             st.selectbox(
                 "Diabetes",
-                options=["Yes", "No"],
+                label_options["risk"]["Diabetes"],
                 key="Diabetes_risk",
                 help="Kondisi di mana tubuh tidak dapat mengatur kadar gula darah dengan baik. Pilih 'Yes' jika ada riwayat diabetes, 'No' jika tidak."
             ),
         "Alcohol":
             st.selectbox(
                 "Alcohol", 
-                options=["Yes", "No"],
+                label_options["risk"]["Alcohol"],
                 key="Alcohol_risk",
                 help="Konsumsi alkohol, yang dapat mempengaruhi kesehatan jantung. Pilih 'Yes' jika mengonsumsi alkohol, 'No' jika tidak."
             ),
         "Previous_Stroke":
             st.selectbox(
                 "Previous Stroke", 
-                options=["Yes", "No"], 
+                label_options["risk"]["Previous_Stroke"], 
                 key="Previous_Stroke_risk",
                 help="Riwayat stroke sebelumnya, yang dapat meningkatkan risiko CVD. Pilih 'Yes' jika ada riwayat stroke, 'No' jika tidak."
             ),
         "Family_History":
             st.selectbox(
                 "Family History", 
-                options=["Yes", "No"],
+                label_options["risk"]["Family_History"],
                 key="Family_History_risk",
                 help="Riwayat penyakit jantung dalam keluarga, yang dapat meningkatkan risiko CVD. Pilih 'Yes' jika ada riwayat keluarga, 'No' jika tidak."
             ),
@@ -241,49 +248,49 @@ if st.session_state['registered']:
         "Hypertension":
             st.selectbox(
                 "Hypertension", 
-                options=["Yes", "No"], 
+                label_options["presence"]["Hypertension"], 
                 key="Hypertension_presence",
                 help="Tekanan darah tinggi, kondisi di mana tekanan darah dalam arteri meningkat secara kronis. Pilih 'Yes' jika ada riwayat hipertensi, 'No' jika tidak."
             ),
         "ECG_Abnormality":
             st.selectbox(
                 "ECG Abnormality",
-                options=["Normal", "Arrhythmia", "Ischemia"],
+                label_options["presence"]["ECG_Abnormality"],
                 key="ECG_Abnormality_presence",
                 help="Kelainan pada hasil elektrokardiogram (ECG), yang dapat menunjukkan masalah jantung. Pilih 'Normal' jika tidak ada kelainan; 'Arrhythmia' jika ketidaknormalan dalam irama jantung, berupa detak jantung terlalu cepat, terlalu lambat, atau tidak teratur; 'Ischemia' jika kondisi otot jantung tidak mendapatkan cukup oksigen karena aliran darah berkurang."
             ),
         "Diabetes":
             st.selectbox(
                 "Diabetes",
-                options=["Yes", "No"], 
+                label_options["presence"]["Diabetes"], 
                 key="Diabetes_presence",
                 help="Kondisi di mana tubuh tidak dapat mengatur kadar gula darah dengan baik. Pilih 'Yes' jika ada riwayat diabetes, 'No' jika tidak."
             ),
         "Alcohol":
             st.selectbox(
                 "Alcohol", 
-                options=["Yes", "No"], 
+                label_options["presence"]["Alcohol"], 
                 key="Alcohol_presence",
                 help="Konsumsi alkohol, yang dapat mempengaruhi kesehatan jantung. Pilih 'Yes' jika mengonsumsi alkohol, 'No' jika tidak."
             ),
         "Previous_Stroke":
             st.selectbox(
                 "Previous Stroke", 
-                options=["Yes", "No"],
+                label_options["presence"]["Previous_Stroke"],
                 key="Previous_Stroke_presence",
                 help="Riwayat stroke sebelumnya, yang dapat meningkatkan risiko CVD. Pilih 'Yes' jika ada riwayat stroke, 'No' jika tidak."
             ),
         "Family_History":
             st.selectbox(
                 "Family History", 
-                options=["Yes", "No"], 
+                label_options["presence"]["Family_History"], 
                 key="Family_History_presence",
                 help="Riwayat penyakit jantung dalam keluarga, yang dapat meningkatkan risiko CVD. Pilih 'Yes' jika ada riwayat keluarga, 'No' jika tidak."
             ),
         "CVD_Risk_Score":
             st.selectbox(
                 "CVD Risk Score", 
-                options=["Low", "Moderate", "High"], 
+                label_options["presence"]["CVD_Risk_Score"], 
                 key="CVD_Risk_Score_presence",
                 help="Skor tingkat risiko seseorang untuk mengembangkan penyakit kardiovaskular di masa depan. Pilih 'Low' jika skor risiko rendah, 'Moderate' jika sedang, dan 'High' jika tinggi."
             ),
