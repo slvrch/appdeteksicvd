@@ -184,9 +184,7 @@ if st.session_state['registered']:
         if st.button("Prediksi", key="predict_risk"):
             try:
                 ordered_data_risk = {key: data_risk[key] for key in features_order_risk}
-                if any(val == "" for val in ordered_data_risk.values()):
-                    st.warning("Mohon lengkapi semua kolom sebelum melakukan prediksi.")
-                    return
+
                 
                 response = requests.post(
                     "https://fastapicvd-production.up.railway.app/predict-risk",
@@ -345,9 +343,7 @@ if st.session_state['registered']:
         if st.button("Prediksi", key="predict_presence"):
             try:
                 ordered_data_presence = {key: data_presence[key] for key in features_order_presence}
-                if any(val == "" for val in ordered_data_presence.values()):
-                    st.warning("Mohon lengkapi semua kolom sebelum melakukan prediksi.")
-                    return
+
                 
                 response = requests.post(
                     "https://fastapicvd-production.up.railway.app/predict-presence",
