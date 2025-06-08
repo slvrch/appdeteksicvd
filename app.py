@@ -8,6 +8,11 @@ import streamlit as st
 import requests
 
 
+with open("features_order_risk.json", "r") as f:
+    features_order_risk = json.load(f)
+
+with open("features_order_presence.json", "r") as f:
+    features_order_presence = json.load(f)
 
 with open("label_options_all.json", "r") as f:
     label_options = json.load(f)
@@ -97,41 +102,6 @@ if st.session_state['registered']:
 
         # Input Form
         data_risk = {
-        "Insulin_Resistance":
-            st.number_input(
-                "Insulin Resistance", 
-                step=0.1, 
-                key="Insulin_Resistance_risk",
-                help="Kondisi dimana sel-sel dalam tubuh tidak merespon dengan baik terhadap insulin. Tingkat resistensi insulin terjadi saat glukosa tidak bisa masuk ke dalam sel dengan efisien yang mengakibatkan peningkatan kadar glukosa dalam darah sehingga dapat mempengaruhi risiko CVD. Nilai normal berkisar antara 0 hingga 10, dengan nilai lebih tinggi menunjukkan resistensi yang lebih besar."
-            ),
-        "Pulse_Pressure":
-            st.number_input(
-                "Pulse Pressure", 
-                step=0.1, 
-                key="Pulse_Pressure_risk",
-                help="Perbedaan antara tekanan sistolik dan diastolik, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 30 hingga 50 mmHg."
-            ),
-        "Diastolic_BP":
-            st.number_input(
-                "Diastolic BP",
-                step=0.1, 
-                key="Diastolic_BP_risk",
-                help="Tekanan darah diastolik, yaitu tekanan pada arteri ketika jantung berada dalam kondisi istirahat di antara dua detak, ketika jantung mengisi kembali dengan darah. Nilai normal berkisar antara 60 hingga 80 mmHg."
-            ),
-        "Systolic_BP":
-            st.number_input(
-                "Systolic BP", 
-                step=0.1, 
-                key="Systolic_BP_risk",
-                help="Tekanan darah sistolik, yaitu tekanan pada arteri ketika jantung berkontraksi dan memompa darah keluar ke seluruh tubuh. Nilai normal berkisar antara 90 hingga 120 mmHg."
-            ),
-        "Resting_HR":
-            st.number_input(
-                "Resting HR", 
-                step=0.1, 
-                key="Resting_HR_risk",
-                help="Jumlah denyut jantung per menit ketika seseorang dalam kondisi istirahat penuh, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 60 hingga 100 detak per menit."
-            ),
         "Hypertension": 
             st.selectbox(
                 "Hypertension", 
@@ -173,14 +143,54 @@ if st.session_state['registered']:
                 label_options["risk"]["Family_History"],
                 key="Family_History_risk",
                 help="Riwayat penyakit jantung dalam keluarga, yang dapat meningkatkan risiko CVD. Pilih 'Yes' jika ada riwayat keluarga, 'No' jika tidak."
-            )       
+            ),
+        "Insulin_Resistance":
+            st.number_input(
+                "Insulin Resistance", 
+                step=0.1, 
+                key="Insulin_Resistance_risk",
+                help="Kondisi dimana sel-sel dalam tubuh tidak merespon dengan baik terhadap insulin. Tingkat resistensi insulin terjadi saat glukosa tidak bisa masuk ke dalam sel dengan efisien yang mengakibatkan peningkatan kadar glukosa dalam darah sehingga dapat mempengaruhi risiko CVD. Nilai normal berkisar antara 0 hingga 10, dengan nilai lebih tinggi menunjukkan resistensi yang lebih besar."
+            ),
+        "Pulse_Pressure":
+            st.number_input(
+                "Pulse Pressure", 
+                step=0.1, 
+                key="Pulse_Pressure_risk",
+                help="Perbedaan antara tekanan sistolik dan diastolik, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 30 hingga 50 mmHg."
+            ),
+        "Diastolic_BP":
+            st.number_input(
+                "Diastolic BP",
+                step=0.1, 
+                key="Diastolic_BP_risk",
+                help="Tekanan darah diastolik, yaitu tekanan pada arteri ketika jantung berada dalam kondisi istirahat di antara dua detak, ketika jantung mengisi kembali dengan darah. Nilai normal berkisar antara 60 hingga 80 mmHg."
+            ),
+        "Systolic_BP":
+            st.number_input(
+                "Systolic BP", 
+                step=0.1, 
+                key="Systolic_BP_risk",
+                help="Tekanan darah sistolik, yaitu tekanan pada arteri ketika jantung berkontraksi dan memompa darah keluar ke seluruh tubuh. Nilai normal berkisar antara 90 hingga 120 mmHg."
+            ),
+        "Resting_HR":
+            st.number_input(
+                "Resting HR", 
+                step=0.1, 
+                key="Resting_HR_risk",
+                help="Jumlah denyut jantung per menit ketika seseorang dalam kondisi istirahat penuh, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 60 hingga 100 detak per menit."
+            )
      }
         # Button to make prediction
         if st.button("Prediksi", key="predict_risk"):
             try:
+                ordered_data_risk = {key: data_risk[key] for key in features_order_risk}
+                if any(val == "" for val in ordered_data_risk.values()):
+                    st.warning("Mohon lengkapi semua kolom sebelum melakukan prediksi.")
+                    return
+                
                 response = requests.post(
                     "https://fastapicvd-production.up.railway.app/predict-risk",
-                    json=data_risk
+                    json=ordered_data_risk
                 )
                 if response.status_code == 200:
                     result_risk = response.json()["prediction"]
@@ -245,41 +255,6 @@ if st.session_state['registered']:
 
         # Input Form
         data_presence = {
-        "Insulin_Resistance":
-            st.number_input(
-                "Insulin Resistance", 
-                step=0.1, 
-                key="Insulin_Resistance_presence",
-                help="Kondisi dimana sel-sel dalam tubuh tidak merespon dengan baik terhadap insulin. Tingkat resistensi insulin terjadi saat glukosa tidak bisa masuk ke dalam sel dengan efisien yang mengakibatkan peningkatan kadar glukosa dalam darah sehingga dapat mempengaruhi risiko CVD. Nilai normal berkisar antara 0 hingga 10, dengan nilai lebih tinggi menunjukkan resistensi yang lebih besar."
-            ),
-        "Pulse_Pressure":
-            st.number_input(
-                "Pulse Pressure", 
-                step=0.1, 
-                key="Pulse_Pressure_presence",
-                help="Perbedaan antara tekanan sistolik dan diastolik, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 30 hingga 50 mmHg."
-            ),
-        "Diastolic_BP":
-            st.number_input(
-                "Diastolic BP", 
-                step=0.1, 
-                key="Diastolic_BP_presence",
-                help="Tekanan darah diastolik, yaitu tekanan pada arteri ketika jantung berada dalam kondisi istirahat di antara dua detak, ketika jantung mengisi kembali dengan darah. Nilai normal berkisar antara 60 hingga 80 mmHg."
-            ),
-        "Systolic_BP":
-            st.number_input(
-                "Systolic BP",  
-                step=0.1, 
-                key="Systolic_BP_presence",
-                help="Tekanan darah sistolik, yaitu tekanan pada arteri ketika jantung berkontraksi dan memompa darah keluar ke seluruh tubuh. Nilai normal berkisar antara 90 hingga 120 mmHg."
-            ),
-        "Resting_HR":
-            st.number_input(
-                "Resting HR", 
-                step=0.1, 
-                key="Resting_HR_presence",
-                help="Jumlah denyut jantung per menit ketika seseorang dalam kondisi istirahat penuh, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 60 hingga 100 detak per menit."
-            ),
         "Hypertension":
             st.selectbox(
                 "Hypertension", 
@@ -328,15 +303,55 @@ if st.session_state['registered']:
                 label_options["presence"]["CVD_Risk_Score"], 
                 key="CVD_Risk_Score_presence",
                 help="Skor tingkat risiko seseorang untuk mengembangkan penyakit kardiovaskular di masa depan. Pilih 'Low' jika skor risiko rendah, 'Moderate' jika sedang, dan 'High' jika tinggi."
+            ),
+        "Insulin_Resistance":
+            st.number_input(
+                "Insulin Resistance", 
+                step=0.1, 
+                key="Insulin_Resistance_presence",
+                help="Kondisi dimana sel-sel dalam tubuh tidak merespon dengan baik terhadap insulin. Tingkat resistensi insulin terjadi saat glukosa tidak bisa masuk ke dalam sel dengan efisien yang mengakibatkan peningkatan kadar glukosa dalam darah sehingga dapat mempengaruhi risiko CVD. Nilai normal berkisar antara 0 hingga 10, dengan nilai lebih tinggi menunjukkan resistensi yang lebih besar."
+            ),
+        "Pulse_Pressure":
+            st.number_input(
+                "Pulse Pressure", 
+                step=0.1, 
+                key="Pulse_Pressure_presence",
+                help="Perbedaan antara tekanan sistolik dan diastolik, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 30 hingga 50 mmHg."
+            ),
+        "Diastolic_BP":
+            st.number_input(
+                "Diastolic BP", 
+                step=0.1, 
+                key="Diastolic_BP_presence",
+                help="Tekanan darah diastolik, yaitu tekanan pada arteri ketika jantung berada dalam kondisi istirahat di antara dua detak, ketika jantung mengisi kembali dengan darah. Nilai normal berkisar antara 60 hingga 80 mmHg."
+            ),
+        "Systolic_BP":
+            st.number_input(
+                "Systolic BP",  
+                step=0.1, 
+                key="Systolic_BP_presence",
+                help="Tekanan darah sistolik, yaitu tekanan pada arteri ketika jantung berkontraksi dan memompa darah keluar ke seluruh tubuh. Nilai normal berkisar antara 90 hingga 120 mmHg."
+            ),
+        "Resting_HR":
+            st.number_input(
+                "Resting HR", 
+                step=0.1, 
+                key="Resting_HR_presence",
+                help="Jumlah denyut jantung per menit ketika seseorang dalam kondisi istirahat penuh, yang dapat menunjukkan kesehatan jantung. Nilai normal berkisar antara 60 hingga 100 detak per menit."
             )
     }
         
         # Button to make prediction
         if st.button("Prediksi", key="predict_presence"):
             try:
+                ordered_data_presence = {key: data_presence[key] for key in features_order_presence}
+                if any(val == "" for val in ordered_data_presence.values()):
+                    st.warning("Mohon lengkapi semua kolom sebelum melakukan prediksi.")
+                    return
+                
                 response = requests.post(
                     "https://fastapicvd-production.up.railway.app/predict-presence",
-                    json=data_presence
+                    json=ordered_data_presence
                 )
                 if response.status_code == 200:
                     result_presence = response.json()["prediction"]
