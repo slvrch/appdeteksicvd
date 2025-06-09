@@ -191,7 +191,7 @@ if st.session_state['registered']:
                     json=ordered_data_risk
                 )
                 if response.status_code == 200:
-                    result_risk = response.json()["prediction"]
+                    result_risk = response.json()["prediction_risk"]
                     st.session_state.hasil_prediksi_risk = result_risk
                     st.success(f"Prediksi berhasil! Hasil: {result_risk}")
 
@@ -350,7 +350,7 @@ if st.session_state['registered']:
                     json=ordered_data_presence
                 )
                 if response.status_code == 200:
-                    result_presence = response.json()["prediction"]
+                    result_presence = response.json()["prediction_presence"]
                     st.session_state.hasil_prediksi_presence = result_presence
                     st.success(f"Prediksi berhasil! Hasil: {result_presence}")
 
