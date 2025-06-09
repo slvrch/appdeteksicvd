@@ -188,7 +188,7 @@ if st.session_state['registered']:
             try:
                 ordered_data_risk = {key: data_risk[key] for key in features_order_risk}
 
-                if any(val == "" for val in ordered_data_presence.values()):
+                if any(val == "" for val in ordered_data_risk.values()):
                     st.warning("Mohon lengkapi semua kolom sebelum melakukan prediksi.")
                     st.stop()
                     
