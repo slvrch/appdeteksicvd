@@ -188,10 +188,10 @@ if st.session_state['registered']:
             try:
                 ordered_data_risk = {key: data_risk[key] for key in features_order_risk}
 
-                if any(val == "" for val in ordered_data_risk.values()):
+                if any(val == "" for val in ordered_data_presence.values()):
                     st.warning("Mohon lengkapi semua kolom sebelum melakukan prediksi.")
                     st.stop()
-
+                    
                 response = requests.post(
                     "https://fastapicvd-production.up.railway.app/predict-risk",
                     json=ordered_data_risk
@@ -394,5 +394,4 @@ if st.session_state['registered']:
                 
             if st.button("Reset", key="reset_presence"):
                 del st.session_state["hasil_prediksi_presence"]
-                st.rerun() 
-
+                st.rerun()
