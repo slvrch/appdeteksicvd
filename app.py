@@ -81,6 +81,9 @@ if not st.session_state['registered']:
                 if response.status_code == 200:
                     st.success("Registrasi berhasil!")
                     st.session_state['registered'] = True
+                    st.session_state['nama'] = nama
+                    st.session_state['email'] = email
+                    st.session_state['no_tlp'] = no_tlp
                     st.query_params = {"registered": "true"}
                     st.rerun()                   
                 else:
@@ -185,7 +188,10 @@ if st.session_state['registered']:
             try:
                 ordered_data_risk = {key: data_risk[key] for key in features_order_risk}
 
-                
+                if any(val == "" for val in ordered_data_risk.values()):
+                    st.warning("Mohon lengkapi semua kolom sebelum melakukan prediksi.")
+                    st.stop()
+
                 response = requests.post(
                     "https://fastapicvd-production.up.railway.app/predict-risk",
                     json=ordered_data_risk
@@ -199,9 +205,9 @@ if st.session_state['registered']:
                     try:
                         requests.post("https://fastapicvd-production.up.railway.app/save-prediction",
                          json={
-                             "nama": nama,
-                             "email": email,
-                             "no_tlp": no_tlp,
+                             "nama": st.session_state.get("nama"),
+                             "email": st.session_state.get("email"),
+                             "no_tlp": st.session_state.get("no_tlp"),
                              "target": "risk",
                              "hasil_prediksi": result_risk
                          })
@@ -343,8 +349,11 @@ if st.session_state['registered']:
         if st.button("Prediksi", key="predict_presence"):
             try:
                 ordered_data_presence = {key: data_presence[key] for key in features_order_presence}
-
                 
+                if any(val == "" for val in ordered_data_presence.values()):
+                    st.warning("Mohon lengkapi semua kolom sebelum melakukan prediksi.")
+                    st.stop()
+   
                 response = requests.post(
                     "https://fastapicvd-production.up.railway.app/predict-presence",
                     json=ordered_data_presence
@@ -358,9 +367,9 @@ if st.session_state['registered']:
                     try:
                         requests.post("https://fastapicvd-production.up.railway.app/save-prediction",
                          json={
-                             "nama": nama,
-                             "email": email,
-                             "no_tlp": no_tlp,
+                             "nama": st.session_state.get("nama"),
+                             "email": st.session_state.get("email"),
+                             "no_tlp": st.session_state.get("no_tlp"),
                              "target": "presence",
                              "hasil_prediksi": result_presence
                          })
