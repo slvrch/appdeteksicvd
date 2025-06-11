@@ -238,7 +238,7 @@ if st.session_state['registered']:
             st.markdown("""
                         - 🏃 Rutin berolahraga minimal 30 menit sehari
                         - 🥦 Konsumsi makanan rendah lemak dan garam
-                        - 🚭 Hindari merokok dan konsumsi alkohol berlebihan
+                        - 🚭 Hindari merokok
                         - 💤 Tidur cukup 7-8 jam sehari
                         - 🩺 Rutin cek kesehatan dan konsultasi dokter
                         - 🧘‍♂️ Kelola stres dengan baik
@@ -345,41 +345,7 @@ if st.session_state['registered']:
             )
     }
         
-        # Button to make prediction
-        if st.button("Prediksi", key="predict_presence"):
-            try:
-                ordered_data_presence = {key: data_presence[key] for key in features_order_presence}
-                
-                if any(val == "" for val in ordered_data_presence.values()):
-                    st.warning("Mohon lengkapi semua kolom sebelum melakukan prediksi.")
-                    st.stop()
-   
-                response = requests.post(
-                    "https://fastapicvd-production.up.railway.app/predict-presence",
-                    json=ordered_data_presence
-                )
-                if response.status_code == 200:
-                    result_presence = response.json()["prediction_presence"]
-                    st.session_state.hasil_prediksi_presence = result_presence
-                    st.success(f"Prediksi berhasil! Hasil: {result_presence}")
-
-                    # Kirim hasil ke Supabase
-                    try:
-                        requests.post("https://fastapicvd-production.up.railway.app/save-prediction",
-                         json={
-                             "nama": st.session_state.get("nama"),
-                             "email": st.session_state.get("email"),
-                             "no_tlp": st.session_state.get("no_tlp"),
-                             "target": "presence",
-                             "hasil_prediksi": result_presence
-                         })
-                    except Exception as err:
-                        st.warning(f"Gagal menyimpan hasil ke database: {err}")   
-                else:
-                    st.error("Gagal memproses prediksi: " + response.text)
-            
-            except Exception as e:
-                st.error(f"Terjadi error saat koneksi ke API: {e}")
+         
 
         if "hasil_prediksi_presence" in st.session_state:
             result_presence = st.session_state.hasil_prediksi_presence
